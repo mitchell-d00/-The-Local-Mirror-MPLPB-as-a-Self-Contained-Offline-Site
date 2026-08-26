@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Link Discipline — MPLPB Local Web</title>
+<meta name="mplpb:document-id" content="LOCAL-SPEC-001">
+<meta name="mplpb:category" content="Specification / Architecture">
+<meta name="mplpb:updated" content="2026-08-05T18:40Z v2">
+<meta name="mplpb:owner" content="Mitchell D. McPhetridge">
+<meta name="mplpb:scope" content="Relative-link rules and required page metadata for the local web">
+<meta name="mplpb:when-to-use" content="Adding a page; moving a folder; repairing a validator failure">
+<meta name="mplpb:status" content="current">
+<meta name="mplpb:supersedes" content="LOCAL-SPEC-OLD-001">
+<link rel="index" href="../index.html">
+<link rel="up" href="./_index.html">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<main>
+<p class="eyebrow">Operational document · template</p>
+<h1>Link discipline and page metadata</h1>
+
+<div class="record"><dl>
+  <dt>Document ID</dt><dd>LOCAL-SPEC-001</dd>
+  <dt>Category</dt><dd>Specification / Architecture</dd>
+  <dt>Updated</dt><dd>2026-08-05T18:40Z v2</dd>
+  <dt>Owner</dt><dd>Mitchell D. McPhetridge</dd>
+  <dt>When to use</dt><dd>Adding a page; moving a folder; repairing a validator failure</dd>
+  <dt>Status</dt><dd>current</dd>
+  <dt>Supersedes</dt><dd>LOCAL-SPEC-OLD-001</dd>
+</dl></div>
+
+<h2>Rules</h2>
+<ol>
+  <li><strong>Every internal link is relative.</strong>
+  <code>../spec/link_discipline.html</code>, never an absolute filesystem path
+  and never <code>file:///</code>. This is what survives the corpus being moved,
+  zipped, or synchronized.</li>
+  <li><strong>Every page declares <code>rel="index"</code> and
+  <code>rel="up"</code></strong> in <code>&lt;head&gt;</code>. These are graph
+  edges for the crawler, not decoration.</li>
+  <li><strong>Every page declares <code>mplpb:status</code></strong> as
+  <code>current</code> or <code>retired</code>. Retrieval filters on it.</li>
+  <li><strong>One directory per spoke</strong>, each with a scope declaration in
+  its <code>_index.html</code>.</li>
+  <li><strong>Never delete.</strong> Retired pages move to
+  <code>_log/superseded/</code>, flip to <code>status: retired</code>, and are
+  named in the replacement's <code>mplpb:supersedes</code>. The filesystem audit
+  still ingests them so the corpus retains its own history.</li>
+</ol>
+
+<h2>Adding a page</h2>
+<p>Copy this file, replace the <code>mplpb:</code> fields and the record card,
+write the body, then add one line to the parent Sub-Index. A page no index links
+to is an orphan — the validator reports it, and the crawler will not ingest it.
+Run <code>tools/validate.py</code> afterwards.</p>
+
+<nav class="related">
+  <a rel="up" href="./_index.html">Back to: Specification Sub-Index</a>
+  <a rel="index" href="../index.html">Main Index</a>
+  <a rel="related" href="../_log/revisions.html">Revision log</a>
+</nav>
+</main>
+</body>
+</html>
